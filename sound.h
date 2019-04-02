@@ -3,7 +3,7 @@
 
 //data structures
 
-struct WAVEHDR{
+struct WAVHDR{
 	char ChunkID[4];	//it has to be "RIFF"
 	int ChunkSize;		//4-byte Number
 	char Format[4];		//it has to be WAVE
@@ -20,3 +20,5 @@ struct WAVEHDR{
 	char SubChunk2ID[4];	//"data"
 	int SubChunk2Size;
 };
+
+void displayWAVHDR(struct WAVHDR h);
