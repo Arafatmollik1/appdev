@@ -1,6 +1,6 @@
 //Constants Definition
-#define RATE 1600
-
+#define RATE 16000
+#define CMD "arecord -r16000 -c1 -f s16_LE -d1 -q test.wav"
 //data structures
 
 struct WAVHDR{
@@ -22,3 +22,4 @@ struct WAVHDR{
 };
 
 void displayWAVHDR(struct WAVHDR h);
+void displayWAVDATA(short []);
