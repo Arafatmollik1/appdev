@@ -5,6 +5,7 @@
 #include<time.h>
 #include "screen.h" //for user-defined header always use " "
 #include "sound.h"
+#include "comm.h"
 int main(){
 	FILE *f;
 	short sd[RATE];
@@ -25,5 +26,7 @@ int main(){
 		fread(&sd, sizeof(sd) , 1, f);
 		displayWAVDATA(sd);
 		fclose(f);
+		sendDATA(sd);
 	}
+	resetColors();
 }

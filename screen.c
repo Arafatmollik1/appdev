@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include "screen.h"
 
 void barChart(int a[]){
 	int i,j;
