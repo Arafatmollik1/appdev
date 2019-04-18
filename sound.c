@@ -110,6 +110,7 @@ void testTone(int c, int f, float d)
 		return;
 	}
 	struct WAVHDR h;	//we need to prepare fro WAV header
+	int samples = d*44100;
 	fillID(h.ChunkID, "RIFF");
 	fillID(h.Format, "WAVE");
 	fillID(h. SubChunk1ID, "fmt ");
@@ -119,26 +120,28 @@ void testTone(int c, int f, float d)
 	h.NumChannels=c;
 	h.SampleRate=44100;
 	h.BitsPerSample=16;
-	if(c==1)
+	h.ByteRate = h.SampleRate * c * h.BitsPerSample / 8;
+	h.BlockAlign= c* h.BitsPerSample/8;
+	h.SubChunk2Size= samples* h.BlockAlign;
+	h.ChunkSize= h.SubChunk2Size + 36;
+
+	FILE *fp = fopen("testTone.wav", "w");
+	if(fp == NULL)
 	{
-		h.ByteRate = h.SampleRate * c * h.BitsPerSample;
-		h.BlockAlign= c* h.BitsPerSample/16;
-		h.SubChunk2Size= d * h.SampleRate * h.BlockAlign;
-		h.ChunkSize= h.SubChunk2Size + 36;
+		printf("we can not openen the file\n ");
+		return;
 	}
-	short data [441000]; //(d * h.SampleRate)
-	for(int i=0; i<d*h.SampleRate; i++)
+	fwrite(&h, sizeof(h), 1, fp);	//write the header
+	for(int i=0; i<samples; i++)
 	{
-		data[i]= 32768*sin(2*PI*i/44100);
+		short data = 32767.0*sin(2*PI*i*f/44100);
+		fwrite(&data, sizeof(short), 1, fp);
+		if(c==2)
+		{
+			short dR = 32767.0*sin(2*PI*i*f/2/44100);
+			fwrite(&dR, sizeof(short), 1, fp);
+		}
 	}
-	FILE *fp =fopen("testTone.wav" , "w");
-	if(fp==NULL)
-	{
-		printf("we cannot open file");
-	return;
-	}
-	fwrite(&h, sizeof(h), 1, fp);
-	fwrite(data, d*h.SampleRate*sizeof(short), 1, fp);
 	fclose(fp);
-	printf("test tone is generated!\n");
+	printf("Test tone is generated!\n");
 }

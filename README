@@ -1,1 +1,88 @@
-# this is the first version
+This project uses a Raspberry Pi 3 Mode B as a sound sensor. A USB sound card
+with microphone and a RJ45 cable are needed as peripheral. The application runs
+periodically every second and take record from microphone at a sample rate of
+16000 Hz. The sound is then calculated into 80 pieces of RMS value and displayed
+as a bar chart on terminal screen. If communication is enabled (conditional
+compilation), the sound will be re-calculated in to 8 pieces of Fast Level data
+and sent out to a PHP server program.
+
+List of Contents
+1. Configuration instructions
+2. Installation instructions
+3. Operation instructions
+4. File manifest
+5. Copyright and license
+6. Contact information
+
+1. Configuration instructions
+	Software:Putty
+	Hardware:Raspberry Pi 3 Mode B, USB, Cat 6 Internet cable, Sound card, Microphone 
+
+Check whether Curl library is already installed on the RPi by running the following command:
+	
+	~$ ls /usr/include/curl
+	If it is not, install it by running the following commands:
+
+	~$ sudo apt-get update
+	~$ sudo apt-get install libcurl3
+	~$ sudo apt-get install libcurl4-openssl-dev
+
+
+	To install alsamixer:
+	~$ sudo nano /etc/apt/sources.list
+	Add the following line at the end of sources.list:
+	
+	Run:
+
+	~$ sudo apt-get update
+	~$ sudo apt-get install alsa-utils=1.0.25-4
+	Reboot (if necessary).
+
+	To test the sound quality:
+	
+	Run:
+
+	~$ arecord -r44100 -c1 -f S16_LE -d5 test.wav
+	Connect dynamic to the sound card. 
+and to play ,Run:
+
+	~$ aplay test.wav
+
+2. Installation instructions
+	The installation of the program requires a screen and a HDMI cable connected to the screen. 
+	First we need to run Linux system and then change the default configuration by entering some codes.
+	Afterwards, only raspberry Pi and Ethernet cable should be connected to computer.
+
+3. Operating Instruction
+
+Run "make" command to compile all the files and run "./sound.out"
+for running the program. You can also open "testcurl.txt" for accessing
+the recorded results
+
+4. List of Files
+	- README : here are few instruction about this project
+	- comm.c : the communication part of the project
+	- comm.h : to perform libcurl communication and send file to sound.php
+	- main.c : contains the main() function and all other function
+	- makefile : to execute the whole project
+	- screen.c : the displaying part of the project
+	- screen.h : All the header file of screen.c
+	- sound.c : analyzes the sound
+	- sound.h : all the header file of the sound.c
+	- sound.php : the data receiving page from the project
+	- testcurl.c : the communication file for sending data.
+
+6.Contact Information
+
+	Name: Mohammod Arafat Mollik	
+	Email:arafathossain923@gmail.com
+	Mobile:0449187712
+
+7.Credits and acknowledgments
+
+	Authors:
+	Mohammod Arafat Mollik - Initial work – Arafatmollik1(GitHub profile)
+	Used resources:
+	Wikimedia Foundation Inc., Wikipedia - Encyclopedia materials - wikipedia.org
+	Used code
+	curl/curl.h - Data transmission from the RPi to the server - curl.haxx.se

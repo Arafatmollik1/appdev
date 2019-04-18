@@ -10,9 +10,9 @@ void barChart(int a[])
 		{
 			printf("\033[%d;%dH", 35-j,i+1);
 #ifdef UNICODE
-		printf("%s", "\u2590");
+			printf("%s", "\u2590");
 #else
-		printf("%c" , ' ');
+			printf("%c" , ' ');
 #endif
 		}
 	}
